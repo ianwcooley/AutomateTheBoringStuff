@@ -11,13 +11,14 @@ extension, searchFolder, outputFolder = sys.argv[1:4]
 
 # throw error and exit program if search folder doesn't exist
 if not os.path.exists(searchFolder):
-    print("Error: search folder doesn't exist")
+    print("Error: folder '" + searchFolder + "' doesn't exist")
     sys.exit()
 
 # make output folder if it doesn't exist
 if not os.path.exists(outputFolder):
     os.mkdir(outputFolder)
 
+# copy files with given extension to output folder
 for foldername, subfolders, filenames in os.walk(searchFolder):
     for filename in filenames:
         if filename.endswith(extension):
