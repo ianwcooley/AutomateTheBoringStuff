@@ -3,7 +3,7 @@
 
 import requests, os, bs4
 
-url = 'http://xkcd.com'               # starting url
+url = 'http://xkcd.com/2068'               # starting url
 os.makedirs('xkcd', exist_ok=True)    # store comics in ./xkcd
 
 while not url.endswith('#'):
@@ -23,14 +23,16 @@ while not url.endswith('#'):
         print(comicUrl)
         # Download the image.
         print('Downloading image %s...' % (comicUrl))
-        res = requests.get(comicUrl)
-        res.raise_for_status()
-
-        # Save the image to ./xkcd.
-        imageFile = open(os.path.join('xkcd', os.path.basename(comicUrl)), 'wb')
-        for chunk in res.iter_content(100000):
-            imageFile.write(chunk)
-        imageFile.close()
+        try:
+            res = requests.get(comicUrl)
+            res.raise_for_status()
+            # Save the image to ./xkcd.
+            imageFile = open(os.path.join('xkcd', os.path.basename(comicUrl)), 'wb')
+            for chunk in res.iter_content(100000):
+                imageFile.write(chunk)
+            imageFile.close()
+        except Exception as error:
+            print(f"An error occurred: {error}")
     
     # Get the Prev button's url.
     prevLink = soup.select('a[rel="prev"]')[0]
